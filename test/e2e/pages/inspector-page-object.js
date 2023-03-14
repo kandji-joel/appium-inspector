@@ -89,6 +89,8 @@ InspectorPage.selectors = {
   recordedActionsPane: 'div[class*=_recorded-actions]',
   startRecordingButton: '#btnStartRecording',
   pauseRecordingButton: '#btnPause',
+  startRefreshingButton: '#btnStartRefreshing',
+  pauseRefreshingButton: '#btnPauseRefreshing',
   reloadButton: '#btnReload',
   screenshotLoadingIndicator: '#screenshotContainer .ant-spin-dot',
 };

@@ -106,6 +106,7 @@ export const SET_GESTURE_TAP_COORDS_MODE = 'SET_GESTURE_TAP_COORDS_MODE';
 export const CLEAR_TAP_COORDINATES = 'CLEAR_TAP_COORDINATES';
 
 export const TOGGLE_SHOW_ATTRIBUTES = 'TOGGLE_SHOW_ATTRIBUTES';
+export const TOGGLE_REFRESHING_STATE = 'TOGGLE_REFRESHING_STATE';
 
 const KEEP_ALIVE_PING_INTERVAL = 5 * 1000;
 const NO_NEW_COMMAND_LIMIT = 24 * 60 * 60 * 1000; // Set timeout to 24 hours
@@ -500,6 +501,12 @@ export function selectScreenshotInteractionMode (screenshotInteractionMode) {
   };
 }
 
+export function toggleRefreshingState () {
+  return (dispatch) => {
+    dispatch({type: TOGGLE_REFRESHING_STATE});
+  };
+}
+
 export function selectAppMode (mode) {
   return async (dispatch, getState) => {
     const {appMode} = getState().inspector;
@@ -692,13 +699,17 @@ export function keepSessionAlive () {
 
 export function callClientMethod (params) {
   return async (dispatch, getState) => {
-    const {driver, appMode, mjpegScreenshotUrl} = getState().inspector;
+    const {driver, appMode, mjpegScreenshotUrl, isRefreshingSource} = getState().inspector;
     const {methodName, ignoreResult = true} = params;
     params.appMode = appMode;
 
     // don't retrieve screenshot if we're already using the mjpeg stream
     if (mjpegScreenshotUrl) {
       params.skipScreenshot = true;
+    }
+
+    if (!isRefreshingSource) {
+      params.skipRefresh = true;
     }
 
     console.log(`Calling client method with params:`); // eslint-disable-line no-console

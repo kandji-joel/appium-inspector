@@ -552,10 +552,18 @@ export function newSession (caps, attachSessId = null) {
     }
 
 
-    const mjpegScreenshotUrl = desiredCapabilities[`appium:${MJPEG_CAP}`] ||
-      desiredCapabilities[MJPEG_CAP] ||
+    var mjpegScreenshotUrl = driver.capabilities[`appium:${MJPEG_CAP}`] ||
+      driver.capabilities[MJPEG_CAP] ||
+      null;
+  
+    const mjpegScreenshotPort = driver.capabilities['appium:mjpegServerPort'] ||
+      driver.capabilities['mjpegServerPort'] ||
       null;
 
+    // Build mjpegScreenshotUrl if mjpegServerPort in session capabilities
+    if (!mjpegScreenshotUrl && mjpegScreenshotPort) {
+      mjpegScreenshotUrl = `http://${host}:${mjpegScreenshotPort}`;
+    }
 
     // pass some state to the inspector that it needs to build recorder
     // code boilerplate
