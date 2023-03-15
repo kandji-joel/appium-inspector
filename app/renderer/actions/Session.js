@@ -563,7 +563,7 @@ export function newSession (caps, attachSessId = null) {
 
     // Build mjpegScreenshotUrl if mjpegServerPort in session capabilities
     if (!mjpegScreenshotUrl && mjpegScreenshotPort) {
-      mjpegScreenshotUrl = `http://${host}:${mjpegScreenshotPort}`;
+      mjpegScreenshotUrl = `${https ? 'https' : 'http'}://${host}:${mjpegScreenshotPort}`;
     }
 
     // pass some state to the inspector that it needs to build recorder
