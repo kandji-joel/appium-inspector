@@ -74,6 +74,7 @@ const FILE_PATH_STORAGE_KEY = 'last_opened_file';
 const AUTO_START_URL_PARAM = '1'; // what should be passed in to ?autoStart= to turn it on
 
 const MJPEG_CAP = 'mjpegScreenshotUrl';
+const MJPEG_PORT_CAP = 'mjpegServerPort';
 
 // Multiple requests sometimes send a new session request
 // after establishing a session.
@@ -556,8 +557,8 @@ export function newSession (caps, attachSessId = null) {
       driver.capabilities[MJPEG_CAP] ||
       null;
   
-    const mjpegScreenshotPort = driver.capabilities['appium:mjpegServerPort'] ||
-      driver.capabilities['mjpegServerPort'] ||
+    const mjpegScreenshotPort = driver.capabilities[`appium:${MJPEG_PORT_CAP}`] ||
+      driver.capabilities[MJPEG_PORT_CAP] ||
       null;
 
     // Build mjpegScreenshotUrl if mjpegServerPort in session capabilities
@@ -579,7 +580,7 @@ export function newSession (caps, attachSessId = null) {
         https,
       },
       mode,
-      mjpegScreenshotUrl,
+      mjpegScreenshotUrl
     });
     action(dispatch);
     dispatch(push('/inspector'));
